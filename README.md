@@ -58,7 +58,7 @@ for these attributes.
 
 In our case, the list of folders to scan to see if attribute caches needed to be invalidated, became so large that our
 development experience suffered from it. Rather than scanning directories on each request, we decided to invalidate
-caches by watching the folders.
+caches by watching the folders, and invalidate files that actually changed manually. 
 
 ## Compile
 
