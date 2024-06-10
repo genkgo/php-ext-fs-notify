@@ -16,6 +16,17 @@ $watcher->watch(function (FsNotify\Event $event) {
 });
 ```
 
+## Why?
+
+Why this extension? With the introduction of [native attributes in PHP 8.0](https://www.php.net/manual/en/language.attributes.overview.php),
+attributes can be placed in many locations. These attributes might influence which actions are available within your
+application. So the application needs to know these attributes before starting the application. Hence, classes need to be scanned
+for these attributes.
+
+In our case, the list of folders to scan to see if attribute caches needed to be invalidated, became so large that our
+development experience suffered from it. Rather than scanning directories on each request, we decided to invalidate
+caches by watching the folders.
+
 ## Compile
 
 Make sure you have Rust installed. See the [PHPER introduction](https://docs.rs/phper-doc/latest/phper_doc/_02_quick_start/_01_write_your_first_extension/index.html)
