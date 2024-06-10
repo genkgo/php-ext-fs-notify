@@ -40,8 +40,8 @@ class Event
     public function getKind(): string;
     
     /**
-      * @return array<int, string>
-      */
+     * @return array<int, string>
+     */
     public function getPaths(): array;
 }
 ```
