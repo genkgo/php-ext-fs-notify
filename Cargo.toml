@@ -1,0 +1,19 @@
+[package]
+name = "php-ext-fs-notify"
+version = "0.0.0"
+publish = false
+edition = "2021"
+authors = ["Frederik Bosch <f.bosch@genkg.nl>"]
+
+[dependencies]
+notify = "6.1.1"
+futures = "0.3"
+log = "0.4.17"
+env_logger = "0.10.0"
+phper = "0.13.1"
+
+[dev-dependencies]
+phper-test = "0.13.1"
+
+[lib]
+crate-type = ["lib", "cdylib"]
