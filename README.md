@@ -30,6 +30,10 @@ class RecommendedWatcher
     
     public function add(string $path, bool $recursive = true): void;
     
+    /**
+     * @param callable(Event): void $handle
+     * @return void
+     */
     public function watch(callable $handle): void;
 }
 
