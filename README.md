@@ -32,7 +32,6 @@ class RecommendedWatcher
     
     /**
      * @param callable(Event): void $handle
-     * @return void
      */
     public function watch(callable $handle): void;
 }
