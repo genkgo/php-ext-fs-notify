@@ -11,9 +11,39 @@ Create watcher, add paths to watch and start watching with a callback.
 $watcher = new FsNotify\RecommendedWatcher();
 $watcher->add(__DIR__);
 $watcher->add(__DIR__, recursive: false);
-$watcher->watch(function (FsNotify\Event $event) {
-    var_dump($event); // dumps instance of FsNotify\Event
-});
+$watcher->watch(
+    function (FsNotify\Event $event) {
+        var_dump($event->getKind()); // kind of file/folder event
+        var_dump($event->getPaths()); // paths 
+    }
+);
+```
+
+## Classes
+
+```php
+namespace FsNotify;
+
+class RecommendedWatcher
+{
+    public function __construct();
+    
+    public function add(string $path, bool $recursive = true): void;
+    
+    public function watch(callable $handle): void;
+}
+
+class Event
+{
+    private function __construct();
+    
+    public function getKind(): string;
+    
+    /**
+      * @return array<int, string>
+      */
+    public function getPaths(): array;
+}
 ```
 
 ## Why?
