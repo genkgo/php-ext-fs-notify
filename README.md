@@ -14,10 +14,10 @@ PHP_VERSION=`php -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;"`
 PHP_EXTENSION_DIR=`php -r "echo ini_get('extension_dir');"`
 
 # download the extension file into the extension dir 
-curl -o "${PHP_EXTENSION_DIR}/fs_notify.so" "https://github.com/genkgo/php-ext-fs-notify/releases/latest/download/linux-php${PHP_VERSION}-fs_notify.so"
+curl -L -o "${PHP_EXTENSION_DIR}/fs_notify.so" "https://github.com/genkgo/php-ext-fs-notify/releases/latest/download/linux-php${PHP_VERSION}-fs_notify.so"
 
 # enable the extension
-echo 'extension=fs_notify.so' > /etc/php/${PHP_VERSION}/cli/conf.d/20-fs_notify.ini
+echo 'extension=fs_notify.so' | tee -a /etc/php/${PHP_VERSION}/cli/conf.d/20-fs_notify.ini > /dev/null
 ```
 
 ## Usage
