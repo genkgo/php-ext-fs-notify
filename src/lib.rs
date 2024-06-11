@@ -85,10 +85,13 @@ pub fn get_module() -> Module {
         .argument(Argument::by_val("path"));
 
     watcher.add_method("watch", Visibility::Public, |this, arguments| {
-        let handler = arguments.get_mut(0).unwrap();
+        let handler = arguments.get_mut(0)
+            .ok_or(NotifyError::new("Failed to get mutable handler"))?;
+
         let (tx, rx) = std::sync::mpsc::channel();
 
-        let mut watcher = RecommendedWatcher::new(tx, Config::default()).unwrap();
+        let mut watcher = RecommendedWatcher::new(tx, Config::default())
+            .map_err(NotifyError::new)?;
         let map = this.get_mut_property("map").expect_mut_z_arr()?;
 
         for (k, v) in map.iter() {
