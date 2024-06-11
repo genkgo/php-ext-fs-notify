@@ -47,6 +47,8 @@ class RecommendedWatcher
     
     public function add(string $path, bool $recursive = true): void;
     
+    public function remove(string $path): void;
+    
     /**
      * @param callable(Event): void $handle
      */

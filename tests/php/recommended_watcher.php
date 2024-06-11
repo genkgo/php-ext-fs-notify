@@ -6,6 +6,8 @@ error_reporting(E_ALL);
 
 $watcher = new FsNotify\RecommendedWatcher();
 $watcher->add(__DIR__);
+$watcher->remove(__DIR__);
+$watcher->remove('unknown');
 $watcher->add(__DIR__, recursive: false);
 $watcher->watch(function (FsNotify\Event $event) {
     var_dump($event->getKind());

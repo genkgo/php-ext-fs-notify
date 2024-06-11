@@ -53,6 +53,16 @@ pub fn get_module() -> Module {
         .argument(Argument::by_val("path"))
         .argument(Argument::by_val_optional("recursive"));
 
+    watcher.add_method("remove", Visibility::Public, |this, arguments| {
+        let path = arguments[0].expect_z_str()?;
+
+        let map = this.get_mut_property("map").expect_mut_z_arr()?;
+        map.remove(path);
+
+        Ok::<_, phper::Error>(())
+    })
+        .argument(Argument::by_val("path"));
+
     watcher.add_method("watch", Visibility::Public, |this, arguments| {
         let handler = arguments.get_mut(0).unwrap();
         let (tx, rx) = std::sync::mpsc::channel();
