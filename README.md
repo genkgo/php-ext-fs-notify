@@ -51,6 +51,7 @@ class RecommendedWatcher
     
     /**
      * @param callable(Event): void $handle
+     * @throws WatchException
      */
     public function watch(callable $handle): void;
 }
@@ -65,6 +66,10 @@ class Event
      * @return array<int, string>
      */
     public function getPaths(): array;
+}
+
+class WatchException extends \Exception
+{
 }
 ```
 

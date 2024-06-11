@@ -475,6 +475,7 @@ dependencies = [
  "phper-build",
  "phper-test",
  "tempfile",
+ "thiserror",
 ]
 
 [[package]]

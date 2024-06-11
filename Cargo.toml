@@ -8,6 +8,7 @@ authors = ["Frederik Bosch <f.bosch@genkgo.nl>"]
 [dependencies]
 notify = "6.1.1"
 phper = "0.13.1"
+thiserror = "1.0.43"
 
 [dev-dependencies]
 phper-test = "0.13.1"
