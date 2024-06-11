@@ -51,7 +51,7 @@ pub fn get_module() -> Module {
         Ok::<_, phper::Error>(())
     })
         .argument(Argument::by_val("path"))
-        .argument(Argument::by_val("recursive"));
+        .argument(Argument::by_val_optional("recursive"));
 
     watcher.add_method("watch", Visibility::Public, |this, arguments| {
         let handler = arguments.get_mut(0).unwrap();
