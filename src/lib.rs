@@ -1,7 +1,9 @@
 use notify::{Config, RecommendedWatcher, RecursiveMode, Watcher, EventKind, event::*};
 use phper::{functions::Argument, modules::Module, php_get_module, values::ZVal, classes::{ClassEntity, ClassEntry, Visibility}};
 use phper::arrays::{ZArray, InsertKey, IterKey};
+use phper::errors::{exception_class, Throwable};
 use phper::objects::{StateObj};
+use std::error::Error;
 use std::convert::Infallible;
 use std::path::PathBuf;
 
@@ -13,7 +15,27 @@ pub fn get_module() -> Module {
         env!("CARGO_PKG_AUTHORS"),
     );
 
-    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
+    #[derive(Debug, thiserror::Error)]
+    #[error(transparent)]
+    pub struct NotifyError(pub Box<dyn Error>);
+
+    impl NotifyError {
+        pub fn new(e: impl Into<Box<dyn Error>>) -> Self {
+            Self(e.into())
+        }
+    }
+
+    impl Throwable for NotifyError {
+        fn get_class(&self) -> &ClassEntry {
+            ClassEntry::from_globals("FsNotify\\WatchException").unwrap_or_else(|_| exception_class())
+        }
+    }
+
+    impl From<NotifyError> for phper::Error {
+        fn from(e: NotifyError) -> Self {
+            phper::Error::throw(e)
+        }
+    }
 
     let mut event = ClassEntity::new("FsNotify\\Event");
     event.add_property("kind", Visibility::Private, ());
@@ -80,8 +102,8 @@ pub fn get_module() -> Module {
                 false => RecursiveMode::NonRecursive,
             };
 
-            watcher.watch(&path, recursive).unwrap();
-            log::info!("Watching: {path:?}")
+            watcher.watch(&path, recursive)
+                .map_err(NotifyError::new)?;
         }
 
         for res in rx {
@@ -150,7 +172,7 @@ pub fn get_module() -> Module {
 
                     handler.call([ZVal::from(php_event)])?;
                 },
-                Err(error) => log::error!("Error: {error:?}"),
+                Err(error) => return Err(NotifyError::new(error).into()),
             }
         }
 
@@ -158,8 +180,12 @@ pub fn get_module() -> Module {
     })
         .argument(Argument::by_val("handle"));
 
+    let mut watch_exception = ClassEntity::new("FsNotify\\WatchException");
+    watch_exception.extends(exception_class);
+
     module.add_class(watcher);
     module.add_class(event);
+    module.add_class(watch_exception);
 
     module
 }
