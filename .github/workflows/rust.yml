@@ -26,7 +26,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-22.04
+          - ubuntu-20.04
           - macos-12
         php-version:
           - "8.1"
@@ -40,7 +40,7 @@ jobs:
 
       - name: Install libclang for Linux
         if: matrix.os == 'ubuntu-22.04'
-        run: sudo apt-get install -y llvm-dev libclang-dev
+        run: sudo apt-get install -y llvm-10-dev libclang-10-dev
 
       - name: Setup libclang for Macos
         if: matrix.os == 'macos-12'
@@ -56,5 +56,6 @@ jobs:
 
       - name: Build
         run: cargo build --verbose
+
       - name: Run tests
         run: cargo test --verbose
