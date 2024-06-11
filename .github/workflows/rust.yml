@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install libclang for Linux
-        if: matrix.os == 'ubuntu-22.04'
+        if: matrix.os == 'ubuntu-20.04'
         run: sudo apt-get install -y llvm-10-dev libclang-10-dev
 
       - name: Setup libclang for Macos
