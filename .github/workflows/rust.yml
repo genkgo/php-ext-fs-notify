@@ -4,19 +4,57 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "*" ]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  required:
+    name: Required
+    needs:
+      - ci
+    runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      - name: Check results
+        run: |
+          [[ ${{ needs.ci.result }} == 'success' ]] || exit 1;
+
+  ci:
+    name: CI
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-22.04
+          - macos-12
+        php-version:
+          - "8.1"
+          - "8.2"
+          - "8.3"
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install libclang for Linux
+        if: matrix.os == 'ubuntu-22.04'
+        run: sudo apt-get install -y llvm-dev libclang-dev
+
+      - name: Setup libclang for Macos
+        if: matrix.os == 'macos-12'
+        run: |
+          brew install llvm@13
+          echo "LIBCLANG_PATH=$(brew --prefix llvm@13)/lib" >> $GITHUB_ENV
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: php-config
+
+      - name: Build
+        run: cargo build --verbose
+      - name: Run tests
+        run: cargo test --verbose
