@@ -3,25 +3,33 @@ name: Publish
 
 on:
   push:
-    branches: [ "main" ]
-    tags: [ "**" ]
+    tags:
+      - v*
+
+permissions:
+  contents: write
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  required:
-    name: Required
-    needs:
-      - ci
+  create_release:
+    name: Release pushed tag
     runs-on: ubuntu-20.04
     steps:
-      - name: Check results
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_TAG: ${{ github.ref_name }}
         run: |
-          [[ ${{ needs.ci.result }} == 'success' ]] || exit 1;
-
-  ci:
-    name: CI
+          gh release create "$GIT_TAG" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GIT_TAG#v}" \
+              --generate-notes
+  artifacts:
+    name: Create artifacts
+    needs:
+      - create_release
     strategy:
       fail-fast: false
       matrix:
@@ -57,8 +65,24 @@ jobs:
       - name: Build
         run: cargo build --verbose --release
 
-      - name: Create extension file (.so)
-        uses: actions/upload-artifact@v4
-        with:
-          name: php-extension-${{ matrix.os }}-${{ matrix.php-version }}
-          path: target/release/libphp_ext_fs_notify.so
+      - name: Create Linux extension file (.so)
+        if: matrix.os == 'ubuntu-20.04'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_TAG: ${{ github.ref_name }}
+        run: |
+          mv target/release/libphp_ext_fs_notify.so target/release/linux-php${{ matrix.php-version }}-libphp_ext_fs_notify.so
+          gh release upload "$GIT_TAG" \
+              --repo="$GITHUB_REPOSITORY" \
+              target/release/linux-php${{ matrix.php-version }}-libphp_ext_fs_notify.so
+
+      - name: Create Macos extension file (.dylib)
+        if: matrix.os == 'macos-12'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_TAG: ${{ github.ref_name }}
+        run: |
+          mv target/release/libphp_ext_fs_notify.dylib target/release/macos-php${{ matrix.php-version }}-libphp_ext_fs_notify.dylib
+          gh release upload "$GIT_TAG" \
+              --repo="$GITHUB_REPOSITORY" \
+              target/release/macos-php${{ matrix.php-version }}-libphp_ext_fs_notify.dylib

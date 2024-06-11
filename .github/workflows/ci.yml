@@ -1,4 +1,4 @@
-name: Rust
+name: CI
 
 on:
   push:
@@ -59,3 +59,17 @@ jobs:
 
       - name: Run tests
         run: cargo test --verbose
+
+      - name: Create Linux extension file (.so)
+        if: matrix.os == 'ubuntu-20.04'
+        uses: actions/upload-artifact@v4
+        with:
+          name: php-extension-${{ matrix.os }}-php${{ matrix.php-version }}
+          path: target/debug/libphp_ext_fs_notify.so
+
+      - name: Create Macos extension file (.dylib)
+        if: matrix.os == 'macos-12'
+        uses: actions/upload-artifact@v4
+        with:
+          name: php-extension-${{ matrix.os }}-php${{ matrix.php-version }}
+          path: target/debug/libphp_ext_fs_notify.dylib
