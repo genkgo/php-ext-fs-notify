@@ -594,7 +594,9 @@ dependencies = [
  "log",
  "notify",
  "phper",
+ "phper-build",
  "phper-test",
+ "tempfile",
 ]
 
 [[package]]

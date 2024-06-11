@@ -9,4 +9,5 @@ $watcher->add(__DIR__, recursive: false);
 $watcher->watch(function (FsNotify\Event $event) {
     var_dump($event->getKind());
     var_dump($event->getPaths());
+    exit;
 });
