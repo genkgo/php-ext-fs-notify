@@ -587,7 +587,7 @@ dependencies = [
 
 [[package]]
 name = "php-ext-fs-notify"
-version = "0.0.0"
+version = "0.1.0"
 dependencies = [
  "env_logger",
  "futures",
