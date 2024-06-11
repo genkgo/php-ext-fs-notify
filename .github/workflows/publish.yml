@@ -71,10 +71,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_TAG: ${{ github.ref_name }}
         run: |
-          mv target/release/libphp_ext_fs_notify.so target/release/linux-php${{ matrix.php-version }}-libphp_ext_fs_notify.so
+          mv target/release/libphp_ext_fs_notify.so target/release/linux-php${{ matrix.php-version }}-fs_notify.so
           gh release upload "$GIT_TAG" \
               --repo="$GITHUB_REPOSITORY" \
-              target/release/linux-php${{ matrix.php-version }}-libphp_ext_fs_notify.so
+              target/release/linux-php${{ matrix.php-version }}-fs_notify.so
 
       - name: Create Macos extension file (.dylib)
         if: matrix.os == 'macos-12'
@@ -82,7 +82,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_TAG: ${{ github.ref_name }}
         run: |
-          mv target/release/libphp_ext_fs_notify.dylib target/release/macos-php${{ matrix.php-version }}-libphp_ext_fs_notify.dylib
+          mv target/release/libphp_ext_fs_notify.dylib target/release/macos-php${{ matrix.php-version }}-fs_notify.dylib
           gh release upload "$GIT_TAG" \
               --repo="$GITHUB_REPOSITORY" \
-              target/release/macos-php${{ matrix.php-version }}-libphp_ext_fs_notify.dylib
+              target/release/macos-php${{ matrix.php-version }}-fs_notify.dylib
