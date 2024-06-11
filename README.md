@@ -89,10 +89,6 @@ for the required build dependencies.
 cargo build
 # for production
 cargo build --release
-```
-
-Copy `target/{debug|release}/libphp_ext_fs_notify.so` into your .so into your extension directory and add it to your php.ini.
-
-```ini
-extension=libphp_ext_fs_notify.so
+# run tests
+cargo test
 ```
