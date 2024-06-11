@@ -7,9 +7,6 @@ authors = ["Frederik Bosch <f.bosch@genkgo.nl>"]
 
 [dependencies]
 notify = "6.1.1"
-futures = "0.3"
-log = "0.4.17"
-env_logger = "0.10.0"
 phper = "0.13.1"
 
 [dev-dependencies]

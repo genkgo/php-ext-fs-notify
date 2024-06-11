@@ -13,8 +13,6 @@ pub fn get_module() -> Module {
         env!("CARGO_PKG_AUTHORS"),
     );
 
-    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
-
     let mut event = ClassEntity::new("FsNotify\\Event");
     event.add_property("kind", Visibility::Private, ());
     event.add_property("paths", Visibility::Private, ());
@@ -81,7 +79,6 @@ pub fn get_module() -> Module {
             };
 
             watcher.watch(&path, recursive).unwrap();
-            log::info!("Watching: {path:?}")
         }
 
         for res in rx {
@@ -150,7 +147,8 @@ pub fn get_module() -> Module {
 
                     handler.call([ZVal::from(php_event)])?;
                 },
-                Err(error) => log::error!("Error: {error:?}"),
+                Err(_) => {
+                },
             }
         }
 
