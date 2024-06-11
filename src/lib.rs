@@ -7,9 +7,8 @@ use std::path::PathBuf;
 
 #[php_get_module]
 pub fn get_module() -> Module {
-    // New `Module` with extension info.
     let mut module = Module::new(
-        env!("CARGO_PKG_NAME"),
+        "fs-notify",
         env!("CARGO_PKG_VERSION"),
         env!("CARGO_PKG_AUTHORS"),
     );
