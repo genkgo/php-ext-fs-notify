@@ -3,6 +3,23 @@
 Uses [PHPER framework](https://github.com/phper-framework/phper) and [notify-rs](https://github.com/notify-rs/notify) 
 to build the extension.
 
+## Installation
+
+In the release download the .so (Linux) or .dylib (macOS) file for your PHP version. Lookup the value of your
+exension_dir, move the extension into that directory. Enable the extension by putting an ini-file in the conf.d folder 
+of your php version. It might look as follows.
+
+```shell
+PHP_VERSION=`php -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;"`
+PHP_EXTENSION_DIR=`php -r "echo ini_get('extension_dir');"`
+
+# download the extension file into the extension dir 
+curl -o "${PHP_EXTENSION_DIR}/libphp_ext_fs_notify.so" "https://github.com/genkgo/php-ext-fs-notify/releases/latest/download/linux-php${PHP_VERSION}-libphp_ext_fs_notify.so"
+
+# enable the extension
+echo 'extension=libphp_ext_fs_notify.so' > /etc/php/${PHP_VERSION}/cli/conf.d/20-libphp_ext_fs_notify.ini
+```
+
 ## Usage
 
 Create watcher, add paths to watch and start watching with a callback.
