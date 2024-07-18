@@ -7,7 +7,7 @@ error_reporting(-1);
 try {
     $watcher = new FsNotify\RecommendedWatcher();
     $watcher->add(__DIR__ . '/unknown');
-    $watcher->watch(fn () => null);
+    $watcher->watch(fn () => false);
 } catch (FsNotify\WatchException) {
     echo "caught exception";
 }

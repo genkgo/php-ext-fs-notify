@@ -32,6 +32,7 @@ $watcher->watch(
     function (FsNotify\Event $event) {
         var_dump($event->getKind()); // kind of file/folder event
         var_dump($event->getPaths()); // paths 
+        return true; // return false if you do not want to continue
     }
 );
 ```
@@ -50,7 +51,7 @@ class RecommendedWatcher
     public function remove(string $path): void;
     
     /**
-     * @param callable(Event): void $handle
+     * @param callable(Event): bool $handle
      * @throws WatchException
      */
     public function watch(callable $handle): void;

@@ -190,7 +190,10 @@ pub fn get_module() -> Module {
                     let kind = php_event.get_mut_property("kind");
                     *kind = php_kind.into();
 
-                    handler.call([ZVal::from(php_event)])?;
+                    let call_result = handler.call([ZVal::from(php_event)])?;
+                    if call_result.expect_bool()? == false {
+                        break;
+                    }
                 },
                 Err(error) => return Err(NotifyError::new(error).into()),
             }
