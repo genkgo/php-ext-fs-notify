@@ -33,9 +33,9 @@ echo 'extension=fs_notify.so' | tee -a /etc/php/${PHP_VERSION}/cli/conf.d/20-fs_
 
 ## Install pre-created .so and .dylib
 
-In the release download the .so (Ubuntu) or .dylib (macOS) file for your PHP version. Lookup the value of your
-exension_dir, move the extension into that directory. Enable the extension by putting an ini-file in the conf.d folder 
-of your php version. It might look as follows.
+In [the release](https://github.com/genkgo/php-ext-fs-notify/releases) download the .so (Ubuntu) or .dylib (macOS) file 
+for your PHP version. Lookup the value of your exension_dir, move the extension into that directory. Enable the 
+extension by putting an ini-file in the conf.d folder of your php version. It might look as follows.
 
 ```shell
 PHP_VERSION=`php -r "echo PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;"`
