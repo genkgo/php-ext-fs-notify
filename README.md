@@ -6,11 +6,11 @@ to build the extension. Supports PHP 8.1, 8.2 and 8.3 for Linux and macOS.
 ## Build from source
 
 ```shell
-# For Debian/Ubuntu
-sudo apt install gcc make llvm-13-dev libclang-13-dev protobuf-c-compiler protobuf-compiler
+# For Debian/Ubuntu, llvm version might differ (13/14/15/etc)
+sudo apt install gcc make llvm-13-dev libclang-13-dev
 
-# For Alpine Linux
-apk add gcc make musl-dev llvm15-dev clang15-dev protobuf-c-compiler
+# For Alpine Linux, llvm version might differ (13/14/15/etc)
+apk add gcc make musl-dev llvm15-dev clang15-dev
 
 # For MacOS
 brew install llvm@13
